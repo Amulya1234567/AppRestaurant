@@ -1,7 +1,7 @@
 package com.ivoyant.restaurantapp.controller;
 
 import com.ivoyant.restaurantapp.dto.Restaurant;
-import com.ivoyant.springboot.service.RestService;
+import com.ivoyant.restaurantapp.service.RestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

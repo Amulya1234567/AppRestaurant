@@ -1,10 +1,10 @@
-package com.ivoyant.springboot.service;
+package com.ivoyant.restaurantapp.service;
 
-import com.ivoyant.springboot.dto.Restaurant;
+import com.ivoyant.restaurantapp.dto.Restaurant;
 
-import com.ivoyant.springboot.exception.DuplicateProductException;
-import com.ivoyant.springboot.exception.FoodNotFoundException;
-import com.ivoyant.springboot.repository.RestaurantJDBCRepo;
+import com.ivoyant.restaurantapp.exception.DuplicateProductException;
+import com.ivoyant.restaurantapp.exception.FoodNotFoundException;
+import com.ivoyant.restaurantapp.repository.RestaurantJDBCRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class RestService {
@@ -36,6 +37,7 @@ public class RestService {
 
     public ResponseEntity<Object> getFood() {
 //      HashMap<String,Object> hashMap=new HashMap<>();
+        System.out.println("Get food details");
         List<Restaurant> lst=restaurantJDBCRepo.findAll();
         if(lst.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

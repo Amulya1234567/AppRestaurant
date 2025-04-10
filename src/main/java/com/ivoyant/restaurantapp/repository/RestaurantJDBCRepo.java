@@ -1,6 +1,7 @@
 package com.ivoyant.restaurantapp.repository;
 
 import com.ivoyant.restaurantapp.dto.Restaurant;
+import com.ivoyant.restaurantapp.repository.mapper.RestaurantRowMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,9 +13,10 @@ import java.util.List;
 public class RestaurantJDBCRepo {
     private final JdbcTemplate jdbcTemplate;
 
-    public int save(Restaurant restaurant) {
+    public Restaurant save(Restaurant restaurant) {
         String sql = "INSERT INTO restaurant (food, category, price) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, restaurant.getFood(), restaurant.getCategory(), restaurant.getPrice());
+        jdbcTemplate.update(sql, restaurant.getFood(), restaurant.getCategory(), restaurant.getPrice());
+        return restaurant;
     }
 
     public List<Restaurant> findAll() {
@@ -38,13 +40,14 @@ public class RestaurantJDBCRepo {
         return jdbcTemplate.update(sql,id);
     }
 
-    public int update(int id, Restaurant restaurant) {
+    public Restaurant update(int id, Restaurant restaurant) {
         String sql = "UPDATE restaurant SET food=?, category=?, price=? WHERE id=?";
-        return jdbcTemplate.update(sql,
+        jdbcTemplate.update(sql,
                 restaurant.getFood(),
                 restaurant.getCategory(),
                 restaurant.getPrice(),
                 id);
+        return restaurant;
     }
 
 }

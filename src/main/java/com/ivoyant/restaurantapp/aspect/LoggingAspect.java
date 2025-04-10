@@ -14,34 +14,33 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LoggingAspect {
-    private final static Logger logger= (Logger) LoggerFactory.getLogger(LoggingAspect.class);
 
     @Before("execution(* com.ivoyant.restaurantapp.service.*.*(..))")
     public void logBefore(){
-        logger.info("Method starts its execution");
+        log.info("Method starts its execution");
     }
 
     @Before("execution(* com.ivoyant.restaurantapp.service.RestService.getFood(..))")
     public void logBeforefood(){
-        logger.info("Method starts its execution ");
+        log.info("Method starts its execution ");
     }
 
     @After("execution(* com.ivoyant.restaurantapp.service.RestService.getFood(..))")
     public void logAfter(){
-        logger.info("Method executed");
+        log.info("Method executed");
     }
 
     @After("execution(* com.ivoyant.restaurantapp.service.RestService.food(..))")
     public void logAfterfood(){
-        logger.info("Method executed after post");
+        log.info("Method executed after post");
     }
 
     @Around("execution(* com.ivoyant.restaurantapp.service.*.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable{
-        logger.info("Aspect log called");
+        log.info("Aspect log called");
 
         Object result=joinPoint.proceed();
-        logger.info("Aspect after log called");
+        log.info("Aspect after log called");
         return result;
     }
 

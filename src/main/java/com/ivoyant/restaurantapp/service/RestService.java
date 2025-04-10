@@ -1,9 +1,9 @@
 package com.ivoyant.restaurantapp.service;
 
+import com.ivoyant.restaurantapp.dto.ErrorResponse;
 import com.ivoyant.restaurantapp.dto.Restaurant;
 
-import com.ivoyant.restaurantapp.exception.DuplicateProductException;
-import com.ivoyant.restaurantapp.exception.FoodNotFoundException;
+import com.ivoyant.restaurantapp.exception.CustomException;
 import com.ivoyant.restaurantapp.repository.RestaurantJDBCRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,17 +17,19 @@ import java.util.Optional;
 @Service
 public class RestService {
     @Autowired
-    RestaurantJDBCRepo restaurantJDBCRepo;
+    public RestaurantJDBCRepo restaurantJDBCRepo;
 
-    public ResponseEntity<Object> save(Restaurant restaurant) {
+    public ResponseEntity<?> save(Restaurant restaurant) {
 //       HashMap<String,Object> hashMap=new HashMap<>();
         if(restaurantJDBCRepo.findByFood(restaurant.getFood()).isEmpty()){
-            int count =restaurantJDBCRepo.save(restaurant);
-            if (count > 0) {
-                return new ResponseEntity<>("Restaurant saved successfully", HttpStatus.CREATED);
-            }
+            Restaurant restaurant1=restaurantJDBCRepo.save(restaurant);
+            return new ResponseEntity<>(restaurant1, HttpStatus.CREATED);
         }
-        throw new DuplicateProductException("food is already present");
+        String message="food is already present";
+        int errorCode=HttpStatus.NOT_FOUND.value();
+        String errorDetails=HttpStatus.NOT_FOUND.toString();
+        ErrorResponse errorResponse=new ErrorResponse(message,errorDetails,errorCode);
+        throw new CustomException(errorResponse);
 
     }
 
@@ -35,7 +37,7 @@ public class RestService {
 //        hashMap.put("Food",restaurant);
 //        return new ResponseEntity<>(savedRestaurant,HttpStatus.CREATED);
 
-    public ResponseEntity<Object> getFood() {
+    public ResponseEntity<?> getFood() {
 //      HashMap<String,Object> hashMap=new HashMap<>();
         System.out.println("Get food details");
         List<Restaurant> lst=restaurantJDBCRepo.findAll();
@@ -46,12 +48,14 @@ public class RestService {
         }
     }
 //
-    public ResponseEntity<Object> getFoodById(int id) {
+    public ResponseEntity<?> getFoodById(int id) {
         List<Restaurant> lst = restaurantJDBCRepo.findById(id);
         if (lst.isEmpty()) {
-             throw new FoodNotFoundException("Food not found");
-//            System.out.println("Food Not Found");
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            String message="ID NOT PRESENT";
+            int errorCode=HttpStatus.NOT_FOUND.value();
+            String errorDetails=HttpStatus.NOT_FOUND.toString();
+            ErrorResponse errorResponse=new ErrorResponse(message,errorDetails,errorCode);
+            throw new CustomException(errorResponse);
         }
         else{
             return new ResponseEntity<>(lst, HttpStatus.CREATED);
@@ -60,7 +64,7 @@ public class RestService {
 
     }
 //
-    public ResponseEntity<Object> getFoodByName(String name) {
+    public ResponseEntity<?> getFoodByName(String name) {
         List<Restaurant> food = restaurantJDBCRepo.findByFood(name);
         if (food.isEmpty()) {
             System.out.println("Food Not Found");
@@ -73,7 +77,7 @@ public class RestService {
         }
     }
 
-    public ResponseEntity<Object> deleteById(int id) {
+    public ResponseEntity<?> deleteById(int id) {
         int count =restaurantJDBCRepo.delete(id);
         if (count > 0) {
             return new ResponseEntity<>(count, HttpStatus.CREATED);
@@ -83,12 +87,15 @@ public class RestService {
 
     }
 
-    public ResponseEntity<Object> updateById(int id, Restaurant restaurant) {
-        int count =restaurantJDBCRepo.update(id,restaurant);
-        if (count > 0) {
-            return new ResponseEntity<>(restaurant, HttpStatus.CREATED);
-        } else {
+    public ResponseEntity<?> updateById(int id, Restaurant restaurant) {
+        Restaurant restaurant1 =restaurantJDBCRepo.update(id,restaurant);
+        if(restaurantJDBCRepo.findById(id).isEmpty()){
             return new ResponseEntity<>("Failed to update", HttpStatus.INTERNAL_SERVER_ERROR);
+        }else{
+            return new ResponseEntity<>(restaurant1, HttpStatus.CREATED);
         }
+
+
+
     }
 }

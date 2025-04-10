@@ -1,4 +1,4 @@
-package com.ivoyant.restaurantapp.repository;
+package com.ivoyant.restaurantapp.repository.mapper;
 
 import com.ivoyant.restaurantapp.dto.Restaurant;
 import org.springframework.jdbc.core.RowMapper;

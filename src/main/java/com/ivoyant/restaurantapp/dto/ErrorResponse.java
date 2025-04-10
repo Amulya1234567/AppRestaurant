@@ -10,17 +10,8 @@ import lombok.Setter;
 @Getter
 @Data
 public class ErrorResponse {
-    String errorMessage;
-    String errorDetails;
-    String errorCode;
-
-//    public ErrorResponse(String errorMessage,String errorDetails,String errorCode){
-//        this.timeStamp=LocalDateTime.now();
-//        this.errorMessage =errorMessage;
-//        this.errorDetails=errorDetails;
-//        this.errorCode=errorCode;
-//    }
-
-
+    private String errorMessage;
+    private String errorDetails;
+    private int errorCode;
 
 }

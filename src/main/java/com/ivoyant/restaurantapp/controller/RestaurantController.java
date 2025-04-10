@@ -10,39 +10,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name="Restaurant")
+@RequestMapping("/restaurant")
 public class RestaurantController {
     @Autowired
-    RestService restService;
+    private RestService restService;
 
 
     @Operation(summary="To enter a food menu")
     @PostMapping("/food")
-    public ResponseEntity<Object> postFood(@RequestBody Restaurant restaurant){
+    public ResponseEntity<?> postFood(@RequestBody Restaurant restaurant){
          return restService.save(restaurant);
     }
 
     @GetMapping("/food")
-    public ResponseEntity<Object> getFood(){
+    public ResponseEntity<?> getFood(){
         return restService.getFood();
     }
 //
     @GetMapping("/getFoodById/{id}")
-    public ResponseEntity<Object> getFoodById(@PathVariable int id){
+    public ResponseEntity<?> getFoodById(@PathVariable int id){
         return restService.getFoodById(id);
     }
 //
     @GetMapping("/getFoodByName/{name}")
-    public ResponseEntity<Object> getFoodByName(@PathVariable String name){
+    public ResponseEntity<?> getFoodByName(@PathVariable String name){
         return restService.getFoodByName(name);
     }
 
     @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable int id){
+    public ResponseEntity<?> deleteById(@PathVariable int id){
         return restService.deleteById(id);
     }
 
     @PutMapping("/Update/{id}")
-    public ResponseEntity<Object> updateById(@PathVariable int id,@RequestBody Restaurant restaurant){
+    public ResponseEntity<?> updateById(@PathVariable int id,@RequestBody Restaurant restaurant){
         return restService.updateById(id,restaurant);
     }
 

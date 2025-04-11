@@ -95,7 +95,5 @@ public class RestService {
             return new ResponseEntity<>(restaurant1, HttpStatus.CREATED);
         }
 
-
-
     }
 }
